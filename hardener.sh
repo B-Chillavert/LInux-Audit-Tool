@@ -2,11 +2,11 @@
 
 # ==========================================
 # Automated Linux System Audit & Hardening Tool
-# Created for Security Portfolio & Hardening
+# Version 2.0 - Extended Hardening Modules
 # ==========================================
 
 echo "=========================================="
-echo "Starting Linux Security Audit Script..."
+echo "Starting Linux Security Audit Script v2.0..."
 echo "=========================================="
 echo ""
 
@@ -26,6 +26,24 @@ echo "Accounts with UID 0 (Root access):"
 awk -F: '($3 == 0) {print $1}' /etc/passwd
 echo ""
 
+# Check 4: Audit critical areas for insecure permissions (World-Writable Files)
+echo "[*] Auditing system for world-writable configuration files..."
+echo "Searching /etc directory for globally editable files..."
+# This finds files in /etc that have the 'other-writable' (o+w) bit enabled
+find /etc -type f -perm -o+w 2>/dev/null
+echo "[+] Audit of /etc file permissions complete."
+echo ""
+
+# Check 5: Check network perimeter defense (Firewall verification)
+echo "[*] Verifying Uncomplicated Firewall (UFW) operational status..."
+if command -v ufw >/dev/null 2>&1; then
+    # ufw status requires administrative elevation; if standard user, it notes restriction
+    sudo ufw status 2>/dev/null || echo "[-] Unable to read firewall state. Execute script with sudo for deep firewall parsing."
+else
+    echo "[!] CRITICAL ALERT: UFW package utility is not installed on this system."
+fi
+echo ""
+
 echo "=========================================="
-echo "Phase 1 Audit Complete."
+echo "Phase 2 Security Audit and Hardening Scan Complete."
 echo "=========================================="
