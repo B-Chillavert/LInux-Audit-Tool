@@ -1,4 +1,14 @@
 #!/bin/bash
+# --------------------------------------------------
+# CRITICAL PRIVILEGE CHECK: Ensure script is run as root
+# --------------------------------------------------
+if [ "$EUID" -ne 0 ]; then
+    echo "=================================================="
+    echo "[!] ERROR: System auditing requires administrative access."
+    echo "[!] Please re-run this tool using: sudo ./hardener.sh"
+    echo "=================================================="
+    exit 1
+fi
 
 # ==========================================
 # Automated Linux System Audit & Hardening Tool
