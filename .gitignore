@@ -1,0 +1,13 @@
+# ==================================================
+# Git Ignore Rules for Linux Audit Tool
+# Prevents compliance reports and logs from leaking
+# ==================================================
+
+# Ignore local system scan results and security reports
+*.txt
+*.md
+!README.md
+
+# Ignore system debugging logs and process dumps
+*.log
+*.audit
